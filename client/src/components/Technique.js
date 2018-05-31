@@ -32,7 +32,7 @@ import data from "../data";
 const styles = {};
 
 const Technique = props => {
-  const { technique, classes, onTechniqueClick } = props;
+  const { technique, classes, onTechniqueClick, onAddClick } = props;
 
   if (technique) {
     const notes = technique.notes ? (
@@ -67,7 +67,11 @@ const Technique = props => {
               <Typography className={classes.title} color="textSecondary">
                 Possible next steps
               </Typography>
-              <TechniqueList techniques={technique.nextSteps.map(id => data.find(t => t.id === id))} onTechniqueClick={onTechniqueClick} />
+              <TechniqueList
+                techniques={technique.nextSteps.map(id => data.find(t => t.id === id))}
+                onTechniqueClick={onTechniqueClick}
+                onAddClick={() => onAddClick("Add Next Step", technique.id, "nextSteps")}
+              />
             </CardContent>
           </Card>
         </Grid>
@@ -77,7 +81,11 @@ const Technique = props => {
               <Typography className={classes.title} color="textSecondary">
                 Counters
               </Typography>
-              <TechniqueList techniques={technique.counters.map(id => data.find(t => t.id === id))} onTechniqueClick={onTechniqueClick} />
+              <TechniqueList
+                techniques={technique.counters.map(id => data.find(t => t.id === id))}
+                onTechniqueClick={onTechniqueClick}
+                onAddClick={() => onAddClick("Add Counter", technique.id, "counters")}
+              />
             </CardContent>
           </Card>
         </Grid>
@@ -91,7 +99,8 @@ const Technique = props => {
 Technique.propTypes = {
   technique: PropTypes.object,
   classes: PropTypes.object.isRequired,
-  onTechniqueClick: PropTypes.func.isRequired
+  onTechniqueClick: PropTypes.func.isRequired,
+  onAddClick: PropTypes.func.isRequired
 };
 
 export default withStyles(styles)(Technique);

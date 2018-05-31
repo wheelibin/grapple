@@ -2,19 +2,18 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import { withStyles } from "@material-ui/core/styles";
-import Button from "@material-ui/core/Button";
+
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 
-import SubmissionIcon from "@material-ui/icons/BrokenImage";
-import MovementIcon from "@material-ui/icons/TransferWithinAStation";
-import TakedownIcon from "@material-ui/icons/DirectionsWalk";
-import PositionIcon from "@material-ui/icons/Accessibility";
+import SubmissionIcon from "@material-ui/icons/NewReleases";
+import MovementIcon from "@material-ui/icons/SwapHoriz";
+import TakedownIcon from "@material-ui/icons/SwapVert";
+import PositionIcon from "@material-ui/icons/AllOut";
 
-import TechniqueDialog from "./TechniqueDialog";
-import AddIcon from "@material-ui/icons/Add";
+import TechniqueActions from "./TechniqueActions";
 
 const icons = {
   movement: <MovementIcon />,
@@ -30,19 +29,9 @@ const styles = theme => ({
 });
 
 class TechniqueList extends React.Component {
-  state = { addDialogOpen: false };
-  handleAddButtonClick = () => {
-    this.setState({ addDialogOpen: true });
-  };
-  handleTechniqueDialogCancel = () => {
-    this.setState({ addDialogOpen: false });
-  };
-  handleTechniqueDialogSubmit = () => {
-    this.setState({ addDialogOpen: false });
-  };
   render() {
-    const { techniques, onTechniqueClick } = this.props;
-    const { addDialogOpen } = this.state;
+    const { techniques, onTechniqueClick, onAddClick } = this.props;
+
     return (
       <div>
         <List component="nav">
@@ -57,10 +46,7 @@ class TechniqueList extends React.Component {
             );
           })}
         </List>
-        <Button onClick={this.handleAddButtonClick} mini variant="fab" color="primary" aria-label="add">
-          <AddIcon />
-        </Button>
-        <TechniqueDialog open={addDialogOpen} onCancel={this.handleTechniqueDialogCancel} onSubmit={this.handleTechniqueDialogSubmit} />
+        <TechniqueActions onAddClick={onAddClick} />
       </div>
     );
   }
@@ -68,7 +54,8 @@ class TechniqueList extends React.Component {
 
 TechniqueList.propTypes = {
   techniques: PropTypes.array.isRequired,
-  onTechniqueClick: PropTypes.func.isRequired
+  onTechniqueClick: PropTypes.func.isRequired,
+  onAddClick: PropTypes.func.isRequired
 };
 
 export default withStyles(styles)(TechniqueList);
