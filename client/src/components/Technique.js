@@ -9,8 +9,6 @@ import Grid from "@material-ui/core/Grid";
 
 import TechniqueList from "./TechniqueList";
 
-import data from "../data";
-
 // const styles = {
 //   card: {
 //     minWidth: 275
@@ -32,7 +30,7 @@ import data from "../data";
 const styles = {};
 
 const Technique = props => {
-  const { technique, classes, onTechniqueClick, onAddClick } = props;
+  const { technique, classes, onTechniqueClick, onAddClick, allTechniques } = props;
 
   if (technique) {
     const notes = technique.notes ? (
@@ -68,7 +66,7 @@ const Technique = props => {
                 Possible next steps
               </Typography>
               <TechniqueList
-                techniques={technique.nextSteps.map(id => data.find(t => t.id === id))}
+                techniques={technique.nextSteps.map(id => allTechniques.find(t => t._id === id))}
                 onTechniqueClick={onTechniqueClick}
                 onAddClick={() => onAddClick("Add Next Step", technique.id, "nextSteps")}
               />
@@ -82,7 +80,7 @@ const Technique = props => {
                 Counters
               </Typography>
               <TechniqueList
-                techniques={technique.counters.map(id => data.find(t => t.id === id))}
+                techniques={technique.counters.map(id => allTechniques.find(t => t._id === id))}
                 onTechniqueClick={onTechniqueClick}
                 onAddClick={() => onAddClick("Add Counter", technique.id, "counters")}
               />
@@ -100,7 +98,8 @@ Technique.propTypes = {
   technique: PropTypes.object,
   classes: PropTypes.object.isRequired,
   onTechniqueClick: PropTypes.func.isRequired,
-  onAddClick: PropTypes.func.isRequired
+  onAddClick: PropTypes.func.isRequired,
+  allTechniques: PropTypes.array.isRequired
 };
 
 export default withStyles(styles)(Technique);

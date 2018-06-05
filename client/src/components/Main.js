@@ -7,7 +7,7 @@ import Paper from "@material-ui/core/Paper";
 import TechniqueDialog from "./TechniqueDialog";
 import TechniqueList from "./TechniqueList";
 import Technique from "./Technique";
-//import data from "../data";
+
 import http from "../http";
 
 const styles = {
@@ -20,7 +20,6 @@ class Main extends Component {
   state = { techniques: [], selectedTechnique: null, techniqueDialogOpen: false, techniqueDialogTitle: "", techniqueDialogData: {} };
   async componentDidMount() {
     const result = await http.get("/techniques");
-    console.log("Read techniques", result.data);
     this.setState({ techniques: result.data });
   }
   handleTechniqueClick = technique => {
@@ -57,7 +56,12 @@ class Main extends Component {
           </Paper>
         </Grid>
         <Grid item md={9}>
-          <Technique technique={selectedTechnique} onTechniqueClick={this.handleTechniqueClick} onAddClick={this.handleAddButtonClick} />
+          <Technique
+            allTechniques={techniques}
+            technique={selectedTechnique}
+            onTechniqueClick={this.handleTechniqueClick}
+            onAddClick={this.handleAddButtonClick}
+          />
         </Grid>
         <TechniqueDialog
           open={techniqueDialogOpen}

@@ -15,7 +15,8 @@ const techniqueTypes = [
   { value: "position", label: "Position" },
   { value: "submission", label: "Submission" },
   { value: "movement", label: "Movement" },
-  { value: "throw", label: "Throw / Takedown" }
+  { value: "throw", label: "Throw / Takedown" },
+  { value: "sweep", label: "Sweep" }
 ];
 
 class TechniqueDialog extends React.Component {
