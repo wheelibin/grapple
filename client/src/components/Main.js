@@ -4,9 +4,6 @@ import { withStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Paper from "@material-ui/core/Paper";
 import ListSubheader from "@material-ui/core/ListSubheader";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import Typography from "@material-ui/core/Typography";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import IconButton from "@material-ui/core/IconButton";
 
@@ -25,7 +22,14 @@ const styles = {
 };
 
 class Main extends Component {
-  state = { techniques: [], selectedTechnique: null, techniqueDialogOpen: false, techniqueDialogTitle: "", techniqueDialogData: {} };
+  state = {
+    techniques: [],
+    selectedTechnique: null,
+    techniqueDialogOpen: false,
+    techniqueDialogTitle: "",
+    techniqueDialogData: {},
+    techniqueDialogTechnique: null
+  };
   async componentDidMount() {
     const result = await http.get("/techniques");
     this.setState({ techniques: result.data });
@@ -34,7 +38,20 @@ class Main extends Component {
     this.setState({ selectedTechnique: technique });
   };
   handleAddButtonClick = (dialogTitle, parent, entity) => {
-    this.setState({ techniqueDialogOpen: true, techniqueDialogTitle: dialogTitle, techniqueDialogData: { parent, entity } });
+    this.setState({
+      techniqueDialogOpen: true,
+      techniqueDialogTitle: dialogTitle,
+      techniqueDialogData: { parent, entity },
+      techniqueDialogTechnique: null
+    });
+  };
+  handleEditButtonClick = technique => {
+    this.setState({
+      techniqueDialogOpen: true,
+      techniqueDialogTitle: "Edit Technique",
+      techniqueDialogData: {},
+      techniqueDialogTechnique: technique
+    });
   };
   handleTechniqueDialogCancel = () => {
     this.setState({ techniqueDialogOpen: false });
@@ -47,13 +64,12 @@ class Main extends Component {
       techniques.push(addResult.data);
       selectedTechnique[entityData.entity].push(addResult.data._id);
     }
-
     this.setState({ techniqueDialogOpen: false, techniques });
   };
 
   render() {
     const { classes } = this.props;
-    const { techniques, selectedTechnique, techniqueDialogOpen, techniqueDialogTitle, techniqueDialogData } = this.state;
+    const { techniques, selectedTechnique, techniqueDialogOpen, techniqueDialogTitle, techniqueDialogData, techniqueDialogTechnique } = this.state;
     return (
       <Grid container className={classes.root} spacing={16} alignItems="stretch" direction="row">
         <Grid item md={3}>
@@ -74,16 +90,12 @@ class Main extends Component {
               <ListSubheader>
                 All Techniques
                 <ListItemSecondaryAction className={classes.listItemSecondaryAction}>
-                  <IconButton aria-label="Add">
+                  <IconButton aria-label="Add" onClick={() => this.handleAddButtonClick("Add Technique")}>
                     <AddIcon />
                   </IconButton>
                 </ListItemSecondaryAction>
               </ListSubheader>
-              <TechniqueList
-                techniques={techniques}
-                onTechniqueClick={this.handleTechniqueClick}
-                onAddClick={() => this.handleAddButtonClick("Add Technique")}
-              />
+              <TechniqueList techniques={techniques} onTechniqueClick={this.handleTechniqueClick} onEditClick={this.handleEditButtonClick} />
             </Paper>
           </Grid>
         </Grid>
@@ -93,6 +105,7 @@ class Main extends Component {
             technique={selectedTechnique}
             onTechniqueClick={this.handleTechniqueClick}
             onAddClick={this.handleAddButtonClick}
+            onEditClick={this.handleEditButtonClick}
           />
         </Grid>
         <TechniqueDialog
@@ -101,6 +114,7 @@ class Main extends Component {
           onCancel={this.handleTechniqueDialogCancel}
           onSubmit={this.handleTechniqueDialogSubmit}
           entityData={techniqueDialogData}
+          technique={techniqueDialogTechnique}
         />
       </Grid>
     );

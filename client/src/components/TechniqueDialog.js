@@ -22,20 +22,22 @@ const techniqueTypes = [
 class TechniqueDialog extends React.Component {
   state = {
     open: false,
-    data: {
+    technique: {
       type: "",
       name: "",
       variation: "",
       notes: ""
     }
   };
+  static getDerivedStateFromProps(props, state) {
+    return { technique: props.technique || state.technique };
+  }
   handleInputChange = e => {
-    this.setState({ data: { ...this.state.data, [e.target.name]: e.target.value } });
+    this.setState({ technique: { ...this.state.technique, [e.target.name]: e.target.value } });
   };
   handleSubmit = () => {
-    this.props.onSubmit(this.state.data, this.props.entityData);
+    this.props.onSubmit(this.state.technique, this.props.entityData);
   };
-
   render() {
     const { classes, open, onCancel, title } = this.props;
     return (
@@ -53,7 +55,7 @@ class TechniqueDialog extends React.Component {
               select
               label="Type"
               className={classes.textField}
-              value={this.state.data.type}
+              value={this.state.technique.type}
               onChange={this.handleInputChange}
               // SelectProps={{
               //   MenuProps: {
@@ -71,7 +73,7 @@ class TechniqueDialog extends React.Component {
             </TextField>
             <TextField
               onChange={this.handleInputChange}
-              value={this.state.data.name}
+              value={this.state.technique.name}
               name="name"
               required
               margin="dense"
@@ -82,7 +84,7 @@ class TechniqueDialog extends React.Component {
             />
             <TextField
               onChange={this.handleInputChange}
-              value={this.state.data.variation}
+              value={this.state.technique.variation}
               name="variation"
               margin="dense"
               id="variation"
@@ -92,7 +94,7 @@ class TechniqueDialog extends React.Component {
             />
             <TextField
               onChange={this.handleInputChange}
-              value={this.state.data.notes}
+              value={this.state.technique.notes}
               name="notes"
               margin="dense"
               id="notes"
@@ -122,7 +124,8 @@ TechniqueDialog.propTypes = {
   onCancel: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
-  entityData: PropTypes.object.isRequired
+  entityData: PropTypes.object.isRequired,
+  technique: PropTypes.object
 };
 
 export default withStyles()(TechniqueDialog);

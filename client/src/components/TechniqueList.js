@@ -18,8 +18,6 @@ import MovementIcon from "@material-ui/icons/SwapHoriz";
 import TakedownIcon from "@material-ui/icons/SwapVert";
 import PositionIcon from "@material-ui/icons/AllOut";
 
-import TechniqueActions from "./TechniqueActions";
-
 const icons = {
   movement: <MovementIcon />,
   submission: <SubmissionIcon />,
@@ -47,7 +45,7 @@ const styles = theme => ({
 
 class TechniqueList extends React.Component {
   render() {
-    const { techniques, onTechniqueClick, onAddClick, classes } = this.props;
+    const { techniques, onTechniqueClick, onEditClick, classes } = this.props;
     //console.log("TechniqueList::techniques", techniques);
     return (
       <div>
@@ -65,13 +63,13 @@ class TechniqueList extends React.Component {
                     container: classes.listItem
                   }}
                 >
-                  <ListItemIcon>{icon}</ListItemIcon>
+                  <ListItemIcon color="secondary">{icon}</ListItemIcon>
                   <ListItemText primary={label} />
                   <ListItemSecondaryAction className={classes.listItemSecondaryAction}>
-                    <IconButton aria-label="Edit">
+                    <IconButton onClick={() => onEditClick(t)} aria-label="Edit" color="secondary">
                       <EditIcon />
                     </IconButton>
-                    <IconButton aria-label="Delete">
+                    <IconButton aria-label="Delete" color="secondary">
                       <DeleteIcon />
                     </IconButton>
                   </ListItemSecondaryAction>
@@ -82,7 +80,6 @@ class TechniqueList extends React.Component {
             }
           })}
         </List>
-        <TechniqueActions onAddClick={onAddClick} />
       </div>
     );
   }
@@ -91,7 +88,7 @@ class TechniqueList extends React.Component {
 TechniqueList.propTypes = {
   techniques: PropTypes.array.isRequired,
   onTechniqueClick: PropTypes.func.isRequired,
-  onAddClick: PropTypes.func.isRequired
+  onEditClick: PropTypes.func.isRequired
 };
 
 export default withStyles(styles)(TechniqueList);
