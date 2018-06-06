@@ -23,7 +23,7 @@ import TechniqueActions from "./TechniqueActions";
 const icons = {
   movement: <MovementIcon />,
   submission: <SubmissionIcon />,
-  takedown: <TakedownIcon />,
+  throw: <TakedownIcon />,
   position: <PositionIcon />
 };
 

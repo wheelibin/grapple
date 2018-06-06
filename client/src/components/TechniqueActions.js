@@ -7,11 +7,9 @@ import AddIcon from "@material-ui/icons/Add";
 const TechniqueActions = props => {
   const { onAddClick } = props;
   return (
-    <div>
-      <Button onClick={onAddClick} mini variant="fab" color="primary" aria-label="add">
-        <AddIcon />
-      </Button>
-    </div>
+    <Button onClick={onAddClick} mini variant="fab" color="primary" aria-label="add">
+      <AddIcon />
+    </Button>
   );
 };
 
