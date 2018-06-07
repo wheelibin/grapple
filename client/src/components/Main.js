@@ -62,7 +62,9 @@ class Main extends Component {
     let selectedTechnique = { ...this.state.selectedTechnique };
     if (addResult.status === 200) {
       techniques.push(addResult.data);
-      selectedTechnique[entityData.entity].push(addResult.data._id);
+      if (entityData.length) {
+        selectedTechnique[entityData.entity].push(addResult.data._id);
+      }
     }
     this.setState({ techniqueDialogOpen: false, techniques });
   };

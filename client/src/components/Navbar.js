@@ -19,6 +19,9 @@ const styles = {
   menuButton: {
     marginLeft: -12,
     marginRight: 20
+  },
+  appBar: {
+    marginBottom: 0
   }
 };
 
@@ -29,13 +32,13 @@ function Navbar(props) {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static">
+      <AppBar position="fixed" className={classes.appBar}>
         <Toolbar>
           <IconButton className={classes.menuButton} color="inherit" aria-label="Menu">
             <MenuIcon />
           </IconButton>
           <Typography variant="title" color="inherit" className={classes.flex}>
-            Title
+            Drill Builder
           </Typography>
           {/* {userLink} */}
           <Button color="inherit">{user.username}</Button>

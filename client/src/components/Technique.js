@@ -15,24 +15,6 @@ import AddIcon from "@material-ui/icons/Add";
 
 import TechniqueList from "./TechniqueList";
 
-// const styles = {
-//   card: {
-//     minWidth: 275
-//   },
-//   bullet: {
-//     display: "inline-block",
-//     margin: "0 2px",
-//     transform: "scale(0.8)"
-//   },
-//   title: {
-//     marginBottom: 16,
-//     fontSize: 14
-//   },
-//   pos: {
-//     marginBottom: 12
-//   }
-// };
-
 const styles = {};
 
 const Technique = props => {
@@ -75,7 +57,11 @@ const Technique = props => {
                 </IconButton>
               </ListItemSecondaryAction>
             </ListSubheader>
-            <TechniqueList techniques={technique.nextSteps.map(id => allTechniques.find(t => t._id === id))} onTechniqueClick={onTechniqueClick} />
+            <TechniqueList
+              techniques={technique.nextSteps.map(id => allTechniques.find(t => t._id === id))}
+              onTechniqueClick={onTechniqueClick}
+              onEditClick={onEditClick}
+            />
           </Paper>
         </Grid>
         <Grid item md={6} xs={12}>
@@ -88,7 +74,11 @@ const Technique = props => {
                 </IconButton>
               </ListItemSecondaryAction>
             </ListSubheader>
-            <TechniqueList techniques={technique.counters.map(id => allTechniques.find(t => t._id === id))} onTechniqueClick={onTechniqueClick} />
+            <TechniqueList
+              techniques={technique.counters.map(id => allTechniques.find(t => t._id === id))}
+              onTechniqueClick={onTechniqueClick}
+              onEditClick={onEditClick}
+            />
           </Paper>
         </Grid>
       </Grid>

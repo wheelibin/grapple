@@ -26,15 +26,19 @@ router.post("/", function(req, res, next) {
   Technique.create(record, (err, addedTechnique) => {
     console.log("addedTechnique", addedTechnique);
     //Add the link to the parent technique
-    Technique.findById(entityData.parent, (err, parentTechnique) => {
-      parentTechnique[entityData.entity] = [
-        ...parentTechnique[entityData.entity],
-        addedTechnique._id
-      ];
-      console.log("parentTechnique before save", parentTechnique);
-      parentTechnique.save();
+    if (entityData.length) {
+      Technique.findById(entityData.parent, (err, parentTechnique) => {
+        parentTechnique[entityData.entity] = [
+          ...parentTechnique[entityData.entity],
+          addedTechnique._id
+        ];
+        console.log("parentTechnique before save", parentTechnique);
+        parentTechnique.save();
+        res.jsonp(addedTechnique);
+      });
+    } else {
       res.jsonp(addedTechnique);
-    });
+    }
 
     //console.log(err, technique);
   });
