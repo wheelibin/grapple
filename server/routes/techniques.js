@@ -3,7 +3,10 @@ var router = express.Router();
 var Technique = require("../models/Technique");
 
 router.get("/", function(req, res, next) {
-  Technique.find({}, function(err, techniques) {
+  Technique.find({}, null, { sort: { name: "asc" } }, function(
+    err,
+    techniques
+  ) {
     res.send(techniques);
   });
 });
@@ -18,8 +21,8 @@ router.post("/", function(req, res, next) {
     name: data.name,
     type: data.type,
     variation: data.variation,
-    counters: [],
-    nextSteps: [],
+    counters: [mongoose.Schema.Types.ObjectId],
+    nextSteps: [mongoose.Schema.Types.ObjectId],
     notes: data.notes
   };
 
