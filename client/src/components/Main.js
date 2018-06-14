@@ -37,12 +37,20 @@ class Main extends Component {
   handleTechniqueClick = technique => {
     this.setState({ selectedTechnique: technique });
   };
-  handleAddButtonClick = (dialogTitle, parent, entity) => {
+  handleAddTechniqueButtonClick = (dialogTitle, parent, entity) => {
     this.setState({
       techniqueDialogOpen: true,
       techniqueDialogTitle: dialogTitle,
       techniqueDialogData: { parent, entity },
       techniqueDialogTechnique: null
+    });
+  };
+  handleAddDrillButtonClick = dialogTitle => {
+    this.setState({
+      drillDialogOpen: true,
+      drillDialogTitle: dialogTitle,
+      // drillDialogData: { parent, entity },
+      drillDialogDrill: null
     });
   };
   handleEditButtonClick = technique => {
@@ -80,7 +88,7 @@ class Main extends Component {
               <ListSubheader>
                 Drills
                 <ListItemSecondaryAction className={classes.listItemSecondaryAction}>
-                  <IconButton aria-label="Add">
+                  <IconButton onClick={this.handleAddDrillButtonClick} aria-label="Add">
                     <AddIcon />
                   </IconButton>
                 </ListItemSecondaryAction>
@@ -92,7 +100,7 @@ class Main extends Component {
               <ListSubheader>
                 All Techniques
                 <ListItemSecondaryAction className={classes.listItemSecondaryAction}>
-                  <IconButton aria-label="Add" onClick={() => this.handleAddButtonClick("Add Technique")}>
+                  <IconButton onClick={() => this.handleAddTechniqueButtonClick("Add Technique")} aria-label="Add">
                     <AddIcon />
                   </IconButton>
                 </ListItemSecondaryAction>
@@ -106,7 +114,7 @@ class Main extends Component {
             allTechniques={techniques}
             technique={selectedTechnique}
             onTechniqueClick={this.handleTechniqueClick}
-            onAddClick={this.handleAddButtonClick}
+            onAddClick={this.handleAddTechniqueButtonClick}
             onEditClick={this.handleEditButtonClick}
           />
         </Grid>
