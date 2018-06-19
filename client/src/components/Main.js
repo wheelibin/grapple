@@ -14,6 +14,7 @@ import TechniqueList from "./TechniqueList";
 import Technique from "./Technique";
 import DrillDialog from "./DrillDialog";
 import DrillList from "./DrillList";
+import Drill from "./Drill";
 
 import http from "../http";
 
@@ -28,6 +29,7 @@ class Main extends Component {
     techniques: [],
     drills: [],
     selectedTechnique: null,
+    selectedDrill: null,
     techniqueDialogOpen: false,
     techniqueDialogTitle: "",
     techniqueDialogData: {},
@@ -61,7 +63,10 @@ class Main extends Component {
     this.setState({ techniques: techniques.data, drills: [drill] });
   }
   handleTechniqueClick = technique => {
-    this.setState({ selectedTechnique: technique });
+    this.setState({ selectedTechnique: technique, selectedDrill: null });
+  };
+  handleDrillClick = drill => {
+    this.setState({ selectedTechnique: null, selectedDrill: drill });
   };
   handleAddTechniqueButtonClick = (dialogTitle, parent, entity) => {
     this.setState({
@@ -107,6 +112,7 @@ class Main extends Component {
       techniques,
       drills,
       selectedTechnique,
+      selectedDrill,
       techniqueDialogOpen,
       techniqueDialogTitle,
       techniqueDialogData,
@@ -127,7 +133,7 @@ class Main extends Component {
                   </IconButton>
                 </ListItemSecondaryAction>
               </ListSubheader>
-              <DrillList drills={drills} />
+              <DrillList drills={drills} onDrillClick={this.handleDrillClick} />
             </Paper>
           </Grid>
           <Grid item md={12}>
@@ -152,6 +158,7 @@ class Main extends Component {
             onAddClick={this.handleAddTechniqueButtonClick}
             onEditClick={this.handleEditButtonClick}
           />
+          <Drill drill={selectedDrill} allTechniques={techniques} />
         </Grid>
         <TechniqueDialog
           open={techniqueDialogOpen}
@@ -161,15 +168,7 @@ class Main extends Component {
           entityData={techniqueDialogData}
           technique={techniqueDialogTechnique}
         />
-        <TechniqueDialog
-          open={techniqueDialogOpen}
-          title={techniqueDialogTitle}
-          onCancel={this.handleTechniqueDialogCancel}
-          onSubmit={this.handleTechniqueDialogSubmit}
-          entityData={techniqueDialogData}
-          technique={techniqueDialogTechnique}
-        />
-        <DrillDialog open={drillDialogOpen} />
+        <DrillDialog open={drillDialogOpen} onCancel={this.handleTechniqueDialogCancel} onSubmit={this.handleTechniqueDialogSubmit} />
       </Grid>
     );
   }

@@ -33,11 +33,11 @@ const Technique = props => {
         <Grid item xs={12}>
           <Card className={classes.card}>
             <CardContent>
-              <Typography className={classes.title} color="textSecondary">
-                {technique.type}
-              </Typography>
               <Typography variant="headline" component="h2">
                 {technique.name}
+              </Typography>
+              <Typography className={classes.title} color="textSecondary">
+                {technique.type}
               </Typography>
               <Typography variant="subheading">{technique.variation}</Typography>
               <Typography className={classes.pos} color="textSecondary">

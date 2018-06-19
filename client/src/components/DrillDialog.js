@@ -80,14 +80,14 @@ class DrillDialog extends React.Component {
   }
 }
 
-DrillDialog.propTypes = {
-  classes: PropTypes.object.isRequired,
-  open: PropTypes.bool,
-  onCancel: PropTypes.func.isRequired,
-  onSubmit: PropTypes.func.isRequired,
-  title: PropTypes.string.isRequired,
-  entityData: PropTypes.object.isRequired,
-  technique: PropTypes.object
-};
+// DrillDialog.propTypes = {
+//   classes: PropTypes.object.isRequired,
+//   open: PropTypes.bool,
+//   onCancel: PropTypes.func.isRequired,
+//   onSubmit: PropTypes.func.isRequired,
+//   title: PropTypes.string.isRequired,
+//   entityData: PropTypes.object.isRequired,
+//   technique: PropTypes.object
+// };
 
 export default withStyles()(DrillDialog);
