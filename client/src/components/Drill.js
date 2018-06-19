@@ -10,10 +10,12 @@ import brown from "@material-ui/core/colors/brown";
 
 const styles = {
   step: {
-    backgroundColor: red[300]
+    backgroundColor: red[300],
+    marginBottom: 16
   },
   opponentStep: {
-    backgroundColor: brown[300]
+    backgroundColor: brown[300],
+    marginBottom: 16
   }
 };
 
@@ -21,18 +23,6 @@ const Drill = props => {
   const { drill, allTechniques, classes } = props;
 
   if (drill) {
-    const steps = drill.steps.map((step, index) => {
-      const technique = allTechniques.find(t => t._id === step.techniqueId);
-      const cardClass = drill.isOpponent ? classes.opponentStep : classes.step;
-      return (
-        <Card key={index} className={cardClass}>
-          <CardContent>
-            <Typography variant="headline">{technique.name}</Typography>
-          </CardContent>
-        </Card>
-      );
-    });
-
     return (
       <Grid container spacing={16} alignItems="center" justify="center">
         <Grid item xs={12}>
@@ -43,7 +33,21 @@ const Drill = props => {
           </Card>
         </Grid>
         <Grid item xs={6}>
-          {steps}
+          {drill.steps.map((step, index) => {
+            const technique = allTechniques.find(t => t._id === step.techniqueId);
+            const cardClass = step.isOpponent ? classes.opponentStep : classes.step;
+            const who = step.isOpponent ? "Opponent" : "You";
+            return (
+              <Card key={index} className={cardClass}>
+                <CardContent>
+                  <Typography variant="headline">{technique.name}</Typography>
+                  <Typography variant="caption" align="right">
+                    {who}
+                  </Typography>
+                </CardContent>
+              </Card>
+            );
+          })}
         </Grid>
       </Grid>
     );
