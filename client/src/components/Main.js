@@ -12,6 +12,8 @@ import AddIcon from "@material-ui/icons/Add";
 import TechniqueDialog from "./TechniqueDialog";
 import TechniqueList from "./TechniqueList";
 import Technique from "./Technique";
+import DrillDialog from "./DrillDialog";
+import DrillList from "./DrillList";
 
 import http from "../http";
 
@@ -24,6 +26,7 @@ const styles = {
 class Main extends Component {
   state = {
     techniques: [],
+    drills: [],
     selectedTechnique: null,
     techniqueDialogOpen: false,
     techniqueDialogTitle: "",
@@ -31,8 +34,31 @@ class Main extends Component {
     techniqueDialogTechnique: null
   };
   async componentDidMount() {
-    const result = await http.get("/techniques");
-    this.setState({ techniques: result.data });
+    const techniques = await http.get("/techniques");
+    // const drills = await http.get("/drills");
+    const drill = {
+      userId: 1,
+      name: "Movement Drill 1",
+      steps: [
+        {
+          techniqueId: "5b19384dce9312482c3ec80d",
+          isOpponent: true
+        },
+        {
+          techniqueId: "5b1938c0ce9312482c3ec812",
+          isOpponent: false
+        },
+        {
+          techniqueId: "5b193886ce9312482c3ec810",
+          isOpponent: false
+        },
+        {
+          techniqueId: "5b193891ce9312482c3ec811",
+          isOpponent: false
+        }
+      ]
+    };
+    this.setState({ techniques: techniques.data, drills: [drill] });
   }
   handleTechniqueClick = technique => {
     this.setState({ selectedTechnique: technique });
@@ -45,11 +71,9 @@ class Main extends Component {
       techniqueDialogTechnique: null
     });
   };
-  handleAddDrillButtonClick = dialogTitle => {
+  handleAddDrillButtonClick = () => {
     this.setState({
       drillDialogOpen: true,
-      drillDialogTitle: dialogTitle,
-      // drillDialogData: { parent, entity },
       drillDialogDrill: null
     });
   };
@@ -79,7 +103,17 @@ class Main extends Component {
 
   render() {
     const { classes } = this.props;
-    const { techniques, selectedTechnique, techniqueDialogOpen, techniqueDialogTitle, techniqueDialogData, techniqueDialogTechnique } = this.state;
+    const {
+      techniques,
+      drills,
+      selectedTechnique,
+      techniqueDialogOpen,
+      techniqueDialogTitle,
+      techniqueDialogData,
+      techniqueDialogTechnique,
+      drillDialogOpen
+    } = this.state;
+
     return (
       <Grid container className={classes.root} spacing={16} alignItems="stretch" direction="row">
         <Grid item md={3}>
@@ -93,6 +127,7 @@ class Main extends Component {
                   </IconButton>
                 </ListItemSecondaryAction>
               </ListSubheader>
+              <DrillList drills={drills} />
             </Paper>
           </Grid>
           <Grid item md={12}>
@@ -126,6 +161,15 @@ class Main extends Component {
           entityData={techniqueDialogData}
           technique={techniqueDialogTechnique}
         />
+        <TechniqueDialog
+          open={techniqueDialogOpen}
+          title={techniqueDialogTitle}
+          onCancel={this.handleTechniqueDialogCancel}
+          onSubmit={this.handleTechniqueDialogSubmit}
+          entityData={techniqueDialogData}
+          technique={techniqueDialogTechnique}
+        />
+        <DrillDialog open={drillDialogOpen} />
       </Grid>
     );
   }
