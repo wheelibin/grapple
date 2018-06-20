@@ -22,7 +22,7 @@ const addTechnique = (req, res, next) => {
   };
 
   Technique.create(record, (err, addedTechnique) => {
-    console.log("addedTechnique", addedTechnique);
+    console.log("addedTechnique", addedTechnique, err);
     //Add the link to the parent technique
     if (entityData.length) {
       Technique.findById(entityData.parent, (err, parentTechnique) => {
