@@ -10,83 +10,134 @@ import Grid from "@material-ui/core/Grid";
 import ListSubheader from "@material-ui/core/ListSubheader";
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import IconButton from "@material-ui/core/IconButton";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
 
 import AddIcon from "@material-ui/icons/Add";
 
 import TechniqueList from "./TechniqueList";
+import * as utils from "../utils";
 
 const styles = {};
 
-const Technique = props => {
-  const { technique, classes, onTechniqueClick, onAddClick, onEditClick, allTechniques } = props;
+class Technique extends React.Component {
+  state = {
+    techniqueMenuAnchorElement: null
+  };
+  handleAddTechniqueMenuClick = event => {
+    this.setState({ techniqueMenuAnchorElement: event.currentTarget });
+  };
+  handleAddTechniqueMenuClose = () => {
+    this.setState({ techniqueMenuAnchorElement: null });
+  };
+  handleAddNewTechniqueClick = (...args) => {
+    //onClick={() => onAddClick("Add Next Step", technique.id, "nextSteps")}
+    this.props.onAddClick(...args);
+  };
+  render() {
+    const { technique, classes, onTechniqueClick, onAddClick, onEditClick, allTechniques } = this.props;
+    const { techniqueMenuAnchorElement } = this.state;
 
-  if (technique) {
-    const notes = technique.notes ? (
-      <div>
-        <Typography variant="caption">Notes:</Typography>
-        <Typography component="p">{technique.notes}</Typography>
-      </div>
-    ) : null;
+    const groupedTechniques = utils.groupBy(allTechniques, "type");
 
-    return (
-      <Grid container spacing={16}>
-        <Grid item xs={12}>
-          <Card className={classes.card}>
-            <CardContent>
-              <Typography variant="headline" component="h2">
-                {technique.name}
-              </Typography>
-              <Typography className={classes.title} color="textSecondary">
-                {technique.type}
-              </Typography>
-              <Typography variant="subheading">{technique.variation}</Typography>
-              <Typography className={classes.pos} color="textSecondary">
-                {technique.tags}
-              </Typography>
-              {notes}
-            </CardContent>
-          </Card>
+    if (technique) {
+      const notes = technique.notes ? (
+        <div>
+          <Typography variant="caption">Notes:</Typography>
+          <Typography component="p">{technique.notes}</Typography>
+        </div>
+      ) : null;
+
+      return (
+        <Grid container spacing={16}>
+          <Grid item xs={12}>
+            <Card className={classes.card}>
+              <CardContent>
+                <Typography variant="headline" component="h2">
+                  {technique.name}
+                </Typography>
+                <Typography className={classes.title} color="textSecondary">
+                  {technique.type}
+                </Typography>
+                <Typography variant="subheading">{technique.variation}</Typography>
+                <Typography className={classes.pos} color="textSecondary">
+                  {technique.tags}
+                </Typography>
+                {notes}
+              </CardContent>
+            </Card>
+          </Grid>
+          <Grid item md={6} xs={12}>
+            <Paper className={classes.paper}>
+              <ListSubheader>
+                Possible next steps
+                <ListItemSecondaryAction className={classes.listItemSecondaryAction}>
+                  <IconButton aria-label="Add" onClick={this.handleAddTechniqueMenuClick}>
+                    <AddIcon />
+                  </IconButton>
+
+                  <Menu
+                    id="simple-menu"
+                    anchorEl={techniqueMenuAnchorElement}
+                    open={techniqueMenuAnchorElement}
+                    onClose={this.handleAddTechniqueMenuClose}
+                  >
+                    {Object.keys(groupedTechniques).map((techniqueType, index) => {
+                      const techniqueItems = groupedTechniques[techniqueType].map((t, index) => {
+                        const label = t.variation ? `${t.name} (${t.variation})` : t.name;
+                        return (
+                          <MenuItem key={index} onClick={this.handleAddTechniqueMenuClose}>
+                            {label}
+                          </MenuItem>
+                        );
+                      });
+                      const menuItems = [
+                        <MenuItem key={index} onClick={this.handleAddTechniqueMenuClose}>
+                          New technique...
+                        </MenuItem>,
+                        ...techniqueItems
+                      ];
+                      return (
+                        <span key={index}>
+                          <ListSubheader>{techniqueType}</ListSubheader>
+                          {menuItems}
+                        </span>
+                      );
+                    })}
+                  </Menu>
+                </ListItemSecondaryAction>
+              </ListSubheader>
+              <TechniqueList
+                techniques={technique.nextSteps.map(id => allTechniques.find(t => t._id === id))}
+                onTechniqueClick={onTechniqueClick}
+                onEditClick={onEditClick}
+              />
+            </Paper>
+          </Grid>
+          <Grid item md={6} xs={12}>
+            <Paper className={classes.paper}>
+              <ListSubheader>
+                Counters / Escapes
+                <ListItemSecondaryAction className={classes.listItemSecondaryAction}>
+                  <IconButton aria-label="Add" onClick={() => onAddClick("Add Counter", technique.id, "counters")}>
+                    <AddIcon />
+                  </IconButton>
+                </ListItemSecondaryAction>
+              </ListSubheader>
+              <TechniqueList
+                techniques={technique.counters.map(id => allTechniques.find(t => t._id === id))}
+                onTechniqueClick={onTechniqueClick}
+                onEditClick={onEditClick}
+              />
+            </Paper>
+          </Grid>
         </Grid>
-        <Grid item md={6} xs={12}>
-          <Paper className={classes.paper}>
-            <ListSubheader>
-              Possible next steps
-              <ListItemSecondaryAction className={classes.listItemSecondaryAction}>
-                <IconButton aria-label="Add" onClick={() => onAddClick("Add Next Step", technique.id, "nextSteps")}>
-                  <AddIcon />
-                </IconButton>
-              </ListItemSecondaryAction>
-            </ListSubheader>
-            <TechniqueList
-              techniques={technique.nextSteps.map(id => allTechniques.find(t => t._id === id))}
-              onTechniqueClick={onTechniqueClick}
-              onEditClick={onEditClick}
-            />
-          </Paper>
-        </Grid>
-        <Grid item md={6} xs={12}>
-          <Paper className={classes.paper}>
-            <ListSubheader>
-              Counters
-              <ListItemSecondaryAction className={classes.listItemSecondaryAction}>
-                <IconButton aria-label="Add" onClick={() => onAddClick("Add Counter", technique.id, "counters")}>
-                  <AddIcon />
-                </IconButton>
-              </ListItemSecondaryAction>
-            </ListSubheader>
-            <TechniqueList
-              techniques={technique.counters.map(id => allTechniques.find(t => t._id === id))}
-              onTechniqueClick={onTechniqueClick}
-              onEditClick={onEditClick}
-            />
-          </Paper>
-        </Grid>
-      </Grid>
-    );
+      );
+    }
+
+    return null;
   }
-
-  return null;
-};
+}
 
 Technique.propTypes = {
   technique: PropTypes.object,

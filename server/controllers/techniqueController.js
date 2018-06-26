@@ -1,9 +1,14 @@
 var Technique = require("../models/Technique");
 
 const getAllTechniques = (req, res, next) => {
-  Technique.find({}, null, { sort: { name: "asc" } }, (err, techniques) => {
-    res.send(techniques);
-  });
+  Technique.find(
+    {},
+    null,
+    { sort: { type: "asc", name: "asc" } },
+    (err, techniques) => {
+      res.send(techniques);
+    }
+  );
 };
 
 const addTechnique = (req, res, next) => {
@@ -16,8 +21,8 @@ const addTechnique = (req, res, next) => {
     name: data.name,
     type: data.type,
     variation: data.variation,
-    counters: [mongoose.Schema.Types.ObjectId],
-    nextSteps: [mongoose.Schema.Types.ObjectId],
+    counters: [],
+    nextSteps: [],
     notes: data.notes
   };
 

@@ -18,11 +18,15 @@ import Drill from "./Drill";
 
 import http from "../http";
 
-const styles = {
+const styles = theme => ({
   root: {
     width: "calc(100% + 0px)"
+  },
+  navSectionHeader: {
+    // backgroundColor: theme.palette.secondary.dark,
+    // color: "white"
   }
-};
+});
 
 class Main extends Component {
   state = {
@@ -99,7 +103,7 @@ class Main extends Component {
     let selectedTechnique = { ...this.state.selectedTechnique };
     if (addResult.status === 200) {
       techniques.push(addResult.data);
-      if (entityData.length) {
+      if (entityData) {
         selectedTechnique[entityData.entity].push(addResult.data._id);
       }
     }
@@ -125,7 +129,7 @@ class Main extends Component {
         <Grid item md={3}>
           <Grid item md={12}>
             <Paper className={classes.paper}>
-              <ListSubheader>
+              <ListSubheader className={classes.navSectionHeader}>
                 Drills
                 <ListItemSecondaryAction className={classes.listItemSecondaryAction}>
                   <IconButton onClick={this.handleAddDrillButtonClick} aria-label="Add">
@@ -138,7 +142,7 @@ class Main extends Component {
           </Grid>
           <Grid item md={12}>
             <Paper className={classes.paper}>
-              <ListSubheader>
+              <ListSubheader className={classes.navSectionHeader}>
                 All Techniques
                 <ListItemSecondaryAction className={classes.listItemSecondaryAction}>
                   <IconButton onClick={() => this.handleAddTechniqueButtonClick("Add Technique")} aria-label="Add">
